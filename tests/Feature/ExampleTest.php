@@ -14,8 +14,6 @@ class ExampleTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        $this->data = 'xxx';
     }
 
     /**
@@ -27,6 +25,8 @@ class ExampleTest extends TestCase
     {
         // 準備
         $user = User::factory()->create();
+
+        dump($user->id);
 
 
         // 実行
