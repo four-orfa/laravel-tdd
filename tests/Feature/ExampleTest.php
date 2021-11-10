@@ -2,11 +2,14 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ExampleTest extends TestCase
 {
+    use RefreshDatabase;
+
     public $data;
     protected function setUp(): void
     {
@@ -23,6 +26,8 @@ class ExampleTest extends TestCase
     public function test_example()
     {
         // 準備
+        $user = User::factory()->create();
+
 
         // 実行
         $response = $this->get('/');
