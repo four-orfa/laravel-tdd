@@ -19,9 +19,9 @@ class BlogViewControllerTest extends TestCase
      */
     public function blogTopPageTest()
     {
-        $blog1 = Blog::factory()->create();
-        $blog2 = Blog::factory()->create();
-        $blog3 = Blog::factory()->create();
+        $blog1 = Blog::factory()->hasComments(1)->create();
+        $blog2 = Blog::factory()->hasComments(2)->create();
+        $blog3 = Blog::factory()->hasComments(3)->create();
 
         // variable pattern.
         $this->get('/')
@@ -32,7 +32,10 @@ class BlogViewControllerTest extends TestCase
             ->assertSee($blog3->title)
             ->assertSee($blog1->user->name)
             ->assertSee($blog2->user->name)
-            ->assertSee($blog3->user->name);
+            ->assertSee($blog3->user->name)
+            ->assertSee('(1件のコメント)')
+            ->assertSee('(2件のコメント)')
+            ->assertSee('(3件のコメント)');
 
 
         // constant pattern.
@@ -46,11 +49,5 @@ class BlogViewControllerTest extends TestCase
             ->assertSee('abc')
             ->assertSee('def')
             ->assertSee('ghi');
-    }
-
-    /** @test */
-    function factoryObservation()
-    {
-        $blog = Blog::factory()->create();
     }
 }
