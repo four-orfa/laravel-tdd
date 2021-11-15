@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\Blog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BlogViewController extends Controller
 {
     public function index()
     {
         // $blogs = Blog::get();
-        $blogs = Blog::withCount('comments')->get();
+        // DB::enableQueryLog();
+        $blogs = Blog::with('user')
+            ->withCount('comments')
+            ->orderByDesc('comments_count')
+            ->get();
+        // dump(DB::getQueryLog());
 
         return view('index', compact('blogs'));
     }
