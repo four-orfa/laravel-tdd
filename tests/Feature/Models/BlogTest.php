@@ -5,6 +5,7 @@ namespace Tests\Feature\Models;
 use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\User;
+use GuzzleHttp\Promise\Create;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -26,5 +27,22 @@ class BlogTest extends TestCase
     {
         $blog = Blog::factory()->create();
         $this->assertInstanceOf(Collection::class, $blog->comments);
+    }
+
+    /** @test status->open */
+    public function scopeOpenedTest()
+    {
+        $blogA = Blog::factory()->create([
+            'status' => Blog::CLOSED,
+            'title' => 'BlogA'
+        ]);
+        $blogB = Blog::factory()->create(['title' => 'BlogB']);
+        $blogC = Blog::factory()->create(['title' => 'BlogC']);
+
+        $blogs = Blog::open()->get();
+
+        $this->assertFalse($blogs->contains($blogA));
+        $this->assertTrue($blogs->contains($blogB));
+        $this->assertTrue($blogs->contains($blogC));
     }
 }

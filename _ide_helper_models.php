@@ -16,6 +16,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $user_id
+ * @property bool $status
  * @property string $title
  * @property string $body
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -26,10 +27,12 @@ namespace App\Models{
  * @method static \Database\Factories\BlogFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Blog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Blog open()
  * @method static \Illuminate\Database\Eloquent\Builder|Blog query()
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereBody($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Blog whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Blog whereUserId($value)

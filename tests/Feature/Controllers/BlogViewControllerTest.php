@@ -51,4 +51,23 @@ class BlogViewControllerTest extends TestCase
             ->assertSee('def')
             ->assertSee('ghi');
     }
+
+    /** @test index */
+    public function BlogListOpenedAndClosed()
+    {
+        Blog::factory()->create(
+            [
+                'status' => Blog::CLOSED,
+                'title' => 'BlogA',
+            ]
+        );
+        Blog::factory()->create(['title' => 'BlogB']);
+        Blog::factory()->create(['title' => 'BlogC']);
+
+        $this->get('/')
+            ->assertOk()
+            ->assertDontSee('BlogA')
+            ->assertSee('BlogB')
+            ->assertSee('BlogC');
+    }
 }
