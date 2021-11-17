@@ -21,4 +21,11 @@ class BlogViewController extends Controller
         // dump(DB::getQueryLog());
         return view('index', compact('blogs'));
     }
+
+    public function detail(Blog $blog)
+    {
+        if ($blog->isClosed()) abort(403);
+
+        return view('blog.detail', compact('blog'));
+    }
 }

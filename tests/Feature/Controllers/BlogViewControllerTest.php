@@ -53,10 +53,11 @@ class BlogViewControllerTest extends TestCase
     }
 
     /** @test index */
-    public function BlogListOpenedAndClosed()
+    public function blogListOpenedAndClosed()
     {
         Blog::factory()->create(
             [
+                // dont use blogFactory function.
                 'status' => Blog::CLOSED,
                 'title' => 'BlogA',
             ]
@@ -69,5 +70,25 @@ class BlogViewControllerTest extends TestCase
             ->assertDontSee('BlogA')
             ->assertSee('BlogB')
             ->assertSee('BlogC');
+    }
+
+    /** @test blog detail. */
+    public function blogDetailTest()
+    {
+        $blog = Blog::factory()->create();
+        $this->get('detail/' . $blog->id)
+            ->assertOk()
+            ->assertSee($blog->title)
+            ->assertSee($blog->user->name);
+    }
+
+    /** @test blog detail private.*/
+    public function blogDetailClosed()
+    {
+        // use blogFactory function.
+        $blog = Blog::factory()->closed()->create();
+
+        $this->get('detail/' . $blog->id)
+            ->assertForbidden();
     }
 }

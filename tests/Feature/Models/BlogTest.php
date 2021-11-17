@@ -45,4 +45,14 @@ class BlogTest extends TestCase
         $this->assertTrue($blogs->contains($blogB));
         $this->assertTrue($blogs->contains($blogC));
     }
+
+    /** @test if Blog is public, return false, and closed return true. */
+    public function isClosedTest()
+    {
+        $blogPublic = Blog::factory()->make();
+        $this->assertFalse($blogPublic->isClosed());
+
+        $blogClosed = Blog::factory()->closed()->make();
+        $this->assertTrue($blogClosed->isClosed());
+    }
 }

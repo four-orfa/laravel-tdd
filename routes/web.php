@@ -16,3 +16,4 @@ use Tests\Feature\Controllers\BlogViewControllerTest;
 */
 
 Route::get('/', [BlogViewController::class, 'index']);
+Route::get('detail/{blog}', [BlogViewController::class, 'detail']);
