@@ -5,6 +5,7 @@ namespace Tests\Feature\Controllers;
 use Tests\TestCase;
 use App\Models\Blog;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -69,7 +70,7 @@ class BlogViewControllerTest extends TestCase
             ->assertOk()
             ->assertDontSee('BlogA')
             ->assertSee('BlogB')
-            ->assertSee('BlogC');
+            ->assertSee('Blog');
     }
 
     /** @test blog detail page. */
@@ -83,12 +84,28 @@ class BlogViewControllerTest extends TestCase
     }
 
     /** @test blog detail closed.*/
-    public function blogDetailClosed()
+    public function blogDetailClosedTest()
     {
         // use blogFactory function.
         $blog = Blog::factory()->closed()->create();
 
         $this->get('detail/' . $blog->id)
             ->assertForbidden();
+    }
+
+    /** @test 1/1 call Happy NewYear! */
+    public function newYearCommentTest()
+    {
+        $blog = Blog::factory()->create();
+
+        Carbon::setTestNow('2020-12-31');
+        $this->get('detail/' . $blog->id)
+            ->assertOk()
+            ->assertDontSee('Happy NewYear!');
+
+        Carbon::setTestNow('2021-01-01');
+        $this->get('detail/' . $blog->id)
+            ->assertOk()
+            ->assertSee('Happy NewYear!');
     }
 }
