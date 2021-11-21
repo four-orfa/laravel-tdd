@@ -52,7 +52,7 @@ class BlogViewControllerTest extends TestCase
             ->assertSee('ghi');
     }
 
-    /** @test index */
+    /** @test index page. */
     public function blogListOpenedAndClosed()
     {
         Blog::factory()->create(
@@ -72,7 +72,7 @@ class BlogViewControllerTest extends TestCase
             ->assertSee('BlogC');
     }
 
-    /** @test blog detail. */
+    /** @test blog detail page. */
     public function blogDetailTest()
     {
         $blog = Blog::factory()->create();
@@ -82,7 +82,7 @@ class BlogViewControllerTest extends TestCase
             ->assertSee($blog->user->name);
     }
 
-    /** @test blog detail private.*/
+    /** @test blog detail closed.*/
     public function blogDetailClosed()
     {
         // use blogFactory function.
