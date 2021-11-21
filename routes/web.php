@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogViewController;
+use App\Http\Controllers\SignUpController;
 use Tests\Feature\Controllers\BlogViewControllerTest;
 
 /*
@@ -17,3 +18,6 @@ use Tests\Feature\Controllers\BlogViewControllerTest;
 
 Route::get('/', [BlogViewController::class, 'index']);
 Route::get('detail/{blog}', [BlogViewController::class, 'detail']);
+
+Route::get('signup', [SignUpController::class, 'index']);
+Route::post('signup', [SignUpController::class, 'store']);
