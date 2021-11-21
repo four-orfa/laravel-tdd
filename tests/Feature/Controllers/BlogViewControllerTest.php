@@ -4,6 +4,7 @@ namespace Tests\Feature\Controllers;
 
 use Tests\TestCase;
 use App\Models\Blog;
+use App\Models\Comment;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -73,14 +74,41 @@ class BlogViewControllerTest extends TestCase
             ->assertSee('Blog');
     }
 
-    /** @test blog detail page. */
+    /** @test blog detail page.
+     *  show comment, order by created_at desc.
+     */
     public function blogDetailTest()
     {
         $blog = Blog::factory()->create();
+
+        // if use hard cording.
+        // Comment::factory()->create([
+        //     'created_at' => now()->sub('5 days'),
+        //     'name' => 'Jon',
+        //     'blog_id' => $blog->id
+        // ]);
+        // Comment::factory()->create([
+        //     'created_at' => now()->sub('3 days'),
+        //     'name' => 'Mike',
+        //     'blog_id' => $blog->id
+        // ]);
+        // Comment::factory()->create([
+        //     'created_at' => now()->sub('1 days'),
+        //     'name' => 'Steven',
+        //     'blog_id' => $blog->id
+        // ]);
+
+        $blog = Blog::factory()->withCommentsData([
+            ['created_at' => now()->sub('5 days'), 'name' => 'Jon',],
+            ['created_at' => now()->sub('3 days'), 'name' => 'Mike',],
+            ['created_at' => now()->sub('1 days'), 'name' => 'Steven',]
+        ])->create();
+
         $this->get('detail/' . $blog->id)
             ->assertOk()
             ->assertSee($blog->title)
-            ->assertSee($blog->user->name);
+            ->assertSee($blog->user->name)
+            ->assertSeeInOrder(['Jon', 'Mike', 'Steven']);
     }
 
     /** @test blog detail closed.*/
