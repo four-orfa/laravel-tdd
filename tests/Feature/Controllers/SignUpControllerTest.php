@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
@@ -29,8 +30,6 @@ class SignUpControllerTest extends TestCase
      */
     public function userRegistrationTest()
     {
-        // validation
-
         // database insert
         $validData = [
             'name' => 'Tomas',
@@ -38,19 +37,20 @@ class SignUpControllerTest extends TestCase
             'password' => 'abc12345'
         ];
 
-        $this->post('signup', $validData)->assertOk();
+        // signup, login, and redirect myPage.
+        $this->post('signup', $validData)->assertRedirect('mypage/blogs');
 
+        // Database check. Other than password.
         unset($validData['password']);
         $this->assertDatabaseHas('users', $validData);
 
         // password inspection
         $user = User::firstWhere($validData);
-        $this->assertNotNull($validData);
 
         $this->assertTrue(Hash::check('abc12345', $user->password));
 
-        // redirect myPage
-
+        // login check
+        $this->assertAuthenticatedAs($user);
     }
 
     /** @test invalid test data */
