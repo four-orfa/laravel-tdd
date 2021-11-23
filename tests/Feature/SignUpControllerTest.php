@@ -35,7 +35,7 @@ class SignUpControllerTest extends TestCase
         $validData = [
             'name' => 'Tomas',
             'email' => 'aaa@bbb.net',
-            'password' => 'abcd12345'
+            'password' => 'abc12345'
         ];
 
         $this->post('signup', $validData)->assertOk();
@@ -47,9 +47,32 @@ class SignUpControllerTest extends TestCase
         $user = User::firstWhere($validData);
         $this->assertNotNull($validData);
 
-        $this->assertTrue(Hash::check('abcd12345', $user->password));
+        $this->assertTrue(Hash::check('abc12345', $user->password));
 
         // redirect myPage
 
+    }
+
+    /** @test invalid test data */
+    public function userRegistrationInvalidDataTest()
+    {
+        $url = 'signup';
+
+        // $this->get('signup');
+        $this->from('signup')->post($url, [])
+            ->assertRedirect($url);
+
+        $this->post($url, ['name' => ''])->assertInvalid('name');
+        $this->post($url, ['name' => str_repeat('a', 21)])->assertInvalid('name');
+        $this->post($url, ['name' => str_repeat('a', 20)])->assertValid('name');
+
+        $this->post($url, ['email' => ''])->assertInvalid('email');
+        $this->post($url, ['email' => 'abcd@ああ.com'])->assertInvalid('email');
+        User::factory()->create(['email' => 'example@gmail.com']);
+        $this->post($url, ['email' => 'example@gmail.com'])->assertInvalid('email');
+
+        $this->post($url, ['password' => ''])->assertInvalid('password');
+        $this->post($url, ['password' => 'abc1234'])->assertInvalid('password');
+        $this->post($url, ['password' => 'abc12345'])->assertValid('password');
     }
 }
