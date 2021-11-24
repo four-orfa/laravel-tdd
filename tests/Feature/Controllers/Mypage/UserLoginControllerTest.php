@@ -18,4 +18,20 @@ class UserLoginControllerTest extends TestCase
     {
         $this->get('mypage/login')->assertOk();
     }
+
+    /**
+     * login input validation
+     *
+     * @test login
+     */
+    public function loginValidation()
+    {
+        $url = 'mypage/login';
+        $this->from($url)->post($url, [])->assertRedirect($url);
+
+        $this->post($url, ['email' => ''])->assertInvalid('email');
+        $this->post($url, ['email' => 'aaa@ああ.com'])->assertInvalid('email');
+
+        $this->post($url, ['password' => ''])->assertInvalid('password');
+    }
 }

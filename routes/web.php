@@ -22,4 +22,6 @@ Route::get('detail/{blog}', [BlogViewController::class, 'detail']);
 
 Route::get('signup', [SignUpController::class, 'index']);
 Route::post('signup', [SignUpController::class, 'store']);
+
 Route::get('mypage/login', [UserLoginController::class, 'index']);
+Route::post('mypage/login', [UserLoginController::class, 'login']);
