@@ -8,6 +8,7 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class SignUpController extends Controller
 {
@@ -35,7 +36,7 @@ class SignUpController extends Controller
         if (Auth::attempt($credentials)) {
             return redirect('mypage/blogs');
         } else {
-            throw new Exception();
+            throw ValidationException::withMessages(['email' => 'error']);
         }
     }
 }
