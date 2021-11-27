@@ -5,6 +5,8 @@ namespace Tests\Feature\Controllers\Mypage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Validation\ValidationException;
+
 use Tests\TestCase;
 
 /**
@@ -81,5 +83,29 @@ class UserLoginControllerTest extends TestCase
         // if invalid email or password, redirect login and find error message.
         $this->from($url)->followingRedirects()->post($url, $postData)
             ->assertSee('Invalid email or password.');
+    }
+
+    /** @test login (if use validation test.) */
+    public function validationExceptionTest()
+    {
+        // necessary exception test.
+        $this->withoutExceptionHandling();
+
+        $postData = [
+            'email' => 'aaa@gmail.com',
+            'password' => 'abc12345',
+        ];
+
+        // exception test only.
+        // $this->expectException(ValidationException::class);
+        // $this->post('mypage/login', $postData);
+
+        // exception with message test.
+        try {
+            $this->post('mypage/login', $postData);
+            $this->fail('not validationException');
+        } catch (ValidationException $e) {
+            $this->assertEquals('Invalid email or password.', $e->errors()['email'][0] ?? '');
+        }
     }
 }
