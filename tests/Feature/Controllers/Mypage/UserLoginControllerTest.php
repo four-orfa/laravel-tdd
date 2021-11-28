@@ -108,4 +108,20 @@ class UserLoginControllerTest extends TestCase
             $this->assertEquals('Invalid email or password.', $e->errors()['email'][0] ?? '');
         }
     }
+
+    /** @test logout */
+    public function logoutTest()
+    {
+        $this->login();
+
+        $url = 'mypage/login';
+
+        $this->post('mypage/logout')
+            ->assertRedirect($url);
+
+        $this->get($url)
+            ->assertSee('Logged out');
+
+        $this->assertGuest();
+    }
 }
