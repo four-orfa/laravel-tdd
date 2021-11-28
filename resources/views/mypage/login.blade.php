@@ -4,7 +4,7 @@
 
 <h1>Login menu</h1>
 
-<form action="post">
+<form method="post" action="login">
     @csrf
 
     @include('inc.error')
@@ -17,7 +17,7 @@
     </div>
     <div>
         <p>password : </p>
-        <input type="password">
+        <input type="password" name="password">
     </div>
     <div>
         <input type="submit" value="submit">

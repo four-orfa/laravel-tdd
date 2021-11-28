@@ -4,13 +4,13 @@
 
 <h1>Sign Up</h1>
 
-<form action="post">
+<form method="post" action="signup">
     @csrf
 
     @include('inc.error')
 
     <div>
-        Name : <input type="text" name="name" value="{{ old('name') }}">
+        Name : <input type=" text" name="name" value="{{ old('name') }}">
     </div>
     <div>
         EMail : <input type="email" name="email" value="{{ old('email') }}">

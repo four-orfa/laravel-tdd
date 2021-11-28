@@ -75,4 +75,24 @@ class SignUpControllerTest extends TestCase
         $this->post($url, ['password' => 'abc1234'])->assertInvalid('password');
         $this->post($url, ['password' => 'abc12345'])->assertValid('password');
     }
+
+    /** @test error message */
+    public function errorMessageTest()
+    {
+        $url = 'signup';
+
+        $postData = [
+            'name' => '',
+            'email' => '',
+            'password' => '',
+        ];
+
+        $this->from($url)->post($url, $postData)->assertRedirect($url);
+
+        // get message after redirect.
+        $this->get($url)
+            ->assertSeeText('nameは必ず指定してください。')
+            ->assertSee('emailは必ず指定してください。')
+            ->assertSee('passwordは必ず指定してください。');
+    }
 }
