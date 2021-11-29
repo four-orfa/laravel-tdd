@@ -14,8 +14,11 @@ class BlogMypageControllerTest extends TestCase
     /** @test guestNot */
     public function guestManagementTest()
     {
+        $url = 'mypage/login';
+
         // not authenticated
-        $this->get('mypage/blogs')->assertRedirect('mypage/login');
+        $this->get('mypage/blogs')->assertRedirect($url);
+        $this->get('mypage/blogs/create')->assertRedirect($url);
     }
 
     /** * @test auth login. */
@@ -33,5 +36,12 @@ class BlogMypageControllerTest extends TestCase
         $this->get('mypage/blogs')->assertOk()
             ->assertSee($myBlog->title)
             ->assertDontSee($other->title);
+    }
+
+    /** @test myPage */
+    function createMypageBlogTest()
+    {
+        $this->login();
+        $this->get('mypage/blogs/create')->assertOk();
     }
 }
