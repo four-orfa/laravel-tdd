@@ -56,4 +56,15 @@ class BlogFactory extends Factory
             }
         });
     }
+
+    public function validData($override = [])
+    {
+        $validData = [
+            'title' => 'blog title',
+            'body' => 'blog body',
+            'status' => '1',
+        ];
+
+        return array_merge($validData, $override);
+    }
 }

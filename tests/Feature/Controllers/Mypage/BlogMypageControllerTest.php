@@ -19,6 +19,7 @@ class BlogMypageControllerTest extends TestCase
         // not authenticated
         $this->get('mypage/blogs')->assertRedirect($url);
         $this->get('mypage/blogs/create')->assertRedirect($url);
+        $this->post('mypage/blogs/create', [])->assertRedirect($url);
     }
 
     /** * @test auth login. */
@@ -43,5 +44,36 @@ class BlogMypageControllerTest extends TestCase
     {
         $this->login();
         $this->get('mypage/blogs/create')->assertOk();
+    }
+
+    /** @test store */
+    function createNewBlogTest()
+    {
+        $this->login();
+
+        $validData = Blog::factory()->validData();
+
+        $this->post('mypage/blogs/create', $validData)
+            ->assertRedirect('mypage/blogs/edit/1'); // SQLite inMemory
+
+        $this->assertDatabaseHas('blogs', $validData);
+    }
+
+    /** @test store */
+    function createPrivateMypageBlogTest()
+    {
+        $this->login();
+
+        $validData = Blog::factory()->validData();
+
+        unset($validData['status']);
+
+        $this->post('mypage/blogs/create', $validData)
+            ->assertRedirect('mypage/blogs/edit/1'); // SQLite inMemory
+
+        $validData['status'] = '0';
+
+        $this->assertDatabaseHas('blogs', $validData);
+        $data = Blog::get()->all();
     }
 }
