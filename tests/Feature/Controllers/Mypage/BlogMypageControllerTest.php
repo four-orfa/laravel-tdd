@@ -76,4 +76,19 @@ class BlogMypageControllerTest extends TestCase
         $this->assertDatabaseHas('blogs', $validData);
         $data = Blog::get()->all();
     }
+
+    /** @test */
+    function validationTest()
+    {
+        $url = 'mypage/blogs/create';
+        $this->login();
+
+        app()->setlocale('testing');
+
+        $this->post($url, ['title' => ''])->assertInvalid('title');
+        $this->post($url, ['title' => str_repeat('a', 256)])->assertInvalid('title');
+        $this->post($url, ['title' => str_repeat('a', 255), 'body' => 'test'])->assertValid('title');
+
+        $this->post($url, ['body' => ''])->assertInvalid('body');
+    }
 }
