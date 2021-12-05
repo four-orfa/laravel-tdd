@@ -20,6 +20,7 @@ class BlogMypageControllerTest extends TestCase
         $this->get('mypage/blogs')->assertRedirect($url);
         $this->get('mypage/blogs/create')->assertRedirect($url);
         $this->post('mypage/blogs/create', [])->assertRedirect($url);
+        $this->get('mypage/blogs/edit/1')->assertRedirect($url);
     }
 
     /** * @test auth login. */
@@ -90,5 +91,25 @@ class BlogMypageControllerTest extends TestCase
         $this->post($url, ['title' => str_repeat('a', 255), 'body' => 'test'])->assertValid('title');
 
         $this->post($url, ['body' => ''])->assertInvalid('body');
+    }
+
+    /** @test edit */
+    function editOnlyMypage()
+    {
+        $blog = Blog::factory()->create();
+
+        $this->login();
+
+        $this->get('mypage/blogs/edit/' . $blog->id)->assertForbidden();
+    }
+
+    /** @test edit */
+    function editMypageTest()
+    {
+        $blog = Blog::factory()->create();
+
+        $this->login($blog->user);
+
+        $this->get('mypage/blogs/edit/' . $blog->id)->assertOk();
     }
 }
