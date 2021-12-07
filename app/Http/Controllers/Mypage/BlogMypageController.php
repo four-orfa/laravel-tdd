@@ -24,10 +24,7 @@ class BlogMypageController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'title' => ['required', 'max:255'],
-            'body' => ['required'],
-        ]);
+        $data = $this->validateInput();
 
         $data = $request->all(['title', 'body']);
         $data['status'] = $request->boolean('status');
@@ -46,5 +43,19 @@ class BlogMypageController extends Controller
         $data = old() ?: $blog;
 
         return view('mypage.blog.edit', compact('blog', 'data'));
+    }
+
+    public function update(Blog $blog)
+    {
+        // authenticate
+
+    }
+
+    private function validateInput()
+    {
+        return request()->validate([
+            'title' => ['required', 'max:255'],
+            'body' => ['required'],
+        ]);
     }
 }
