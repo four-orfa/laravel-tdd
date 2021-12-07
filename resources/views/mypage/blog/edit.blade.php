@@ -16,7 +16,7 @@
     </div>
     <div>
         <p>body : </p>
-        <textarea name="body" style="width: 600px; height: 200px">{{ data_get($data, 'status') }}</textarea>
+        <textarea name="body" style="width: 600px; height: 200px">{{ data_get($data, 'body') }}</textarea>
     </div>
     <div>
         <p>public : </p>

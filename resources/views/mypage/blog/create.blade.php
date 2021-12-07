@@ -8,7 +8,7 @@
     @csrf
     @include('inc.error')
 
-    <div>Title : <input type="text" name="text" style="width:400px" value="{{ old('title') }}"></div>
+    <div>Title : <input type="text" name="title" style="width:400px" value="{{ old('title') }}"></div>
     <div>Body : <textarea name="body" cols="30" rows="10">{{ old('body') }}</textarea></div>
     <div> Publish : <input type="checkbox" name="status" value="1" {{ old('status') ? 'checked' : '' }}>Release</div>
 
