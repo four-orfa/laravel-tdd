@@ -45,10 +45,16 @@ class BlogMypageController extends Controller
         return view('mypage.blog.edit', compact('blog', 'data'));
     }
 
-    public function update(Blog $blog)
+    public function update(Blog $blog, Request $request)
     {
-        // authenticate
+        $data = $this->validateInput();
 
+        $data['status'] = $request->boolean('status');
+
+        $blog->update($data);
+
+        return redirect(route('mypage.blog.edit', $blog))
+            ->with('status', 'Blog Update');
     }
 
     private function validateInput()

@@ -21,6 +21,7 @@ class BlogMypageControllerTest extends TestCase
         $this->get('mypage/blogs/create')->assertRedirect($url);
         $this->post('mypage/blogs/create', [])->assertRedirect($url);
         $this->get('mypage/blogs/edit/1')->assertRedirect($url);
+        $this->post('mypage/blogs/edit/1')->assertRedirect($url);
     }
 
     /** * @test auth login. */
@@ -111,5 +112,40 @@ class BlogMypageControllerTest extends TestCase
         $this->login($blog->user);
 
         $this->get('mypage/blogs/edit/' . $blog->id)->assertOk();
+    }
+
+    /** @test update */
+    function updateMyBlogTest()
+    {
+        $validData = [
+            'title' => 'new title',
+            'body' => 'new body',
+            'status' => '1',
+        ];
+
+        $blog = Blog::factory()->create();
+
+        $url = 'mypage/blogs/edit/' . $blog->id;
+
+        $this->login($blog->user);
+
+        $this->from($url)->post($url, $validData)
+            ->assertRedirect($url);
+
+        $this->get($url)
+            ->assertSeeText('Blog Update');
+
+        $this->assertDatabaseHas('blogs', $validData);
+
+        // if blog necessary database count
+        $this->assertCount(1, Blog::all());
+        $this->assertEquals(1, Blog::count());
+
+        // if new data test
+        $this->assertEquals('new title', $blog->fresh()->title);
+        $this->assertEquals('new body', $blog->fresh()->body);
+        // another pattern
+        $blog->refresh();
+        $this->assertEquals('new title', $blog->title);
     }
 }
