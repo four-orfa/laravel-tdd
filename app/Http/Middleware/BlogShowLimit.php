@@ -16,9 +16,18 @@ class BlogShowLimit
      */
     public function handle(Request $request, Closure $next)
     {
+        if ($this->runningUnitTest()) {
+            return $next($request);
+        }
+
         if (!in_array($request->ip(), ['192.168.255.255'], true)) {
             abort(403, 'Your IP is not valid.');
         }
         return $next($request);
+    }
+
+    protected function runningUnitTest()
+    {
+        return app()->runningInConsole() && app()->runningUnitTests();
     }
 }
