@@ -77,7 +77,6 @@ class BlogMypageControllerTest extends TestCase
         $validData['status'] = '0';
 
         $this->assertDatabaseHas('blogs', $validData);
-        $data = Blog::get()->all();
     }
 
     /** @test */
@@ -85,6 +84,9 @@ class BlogMypageControllerTest extends TestCase
     {
         $url = 'mypage/blogs/create';
         $this->login();
+
+        $this->from($url)->post($url, [])
+            ->assertRedirect($url);
 
         app()->setlocale('testing');
 
