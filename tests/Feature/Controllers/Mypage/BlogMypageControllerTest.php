@@ -22,6 +22,7 @@ class BlogMypageControllerTest extends TestCase
         $this->post('mypage/blogs/create', [])->assertRedirect($url);
         $this->get('mypage/blogs/edit/1')->assertRedirect($url);
         $this->post('mypage/blogs/edit/1')->assertRedirect($url);
+        $this->delete('mypage/blogs/delete/1')->assertRedirect($url);
     }
 
     /** * @test auth login. */
@@ -147,5 +148,32 @@ class BlogMypageControllerTest extends TestCase
         // another pattern
         $blog->refresh();
         $this->assertEquals('new title', $blog->title);
+    }
+
+    /** @test destroy */
+    function myblogDeleteTest()
+    {
+        $blog = Blog::factory()->create();
+
+        $this->login($blog->user);
+
+        $this->delete('mypage/blogs/delete/' . $blog->id)
+            ->assertRedirect('mypage/blogs');
+
+        // DB delete test
+        $this->assertDeleted($blog);
+    }
+
+    /** @test cant destroy by guest */
+    function guestDeleteTest()
+    {
+        $blog = Blog::factory()->create();
+
+        $this->login();
+
+        $this->delete('mypage/blogs/delete/' . $blog->id)
+            ->assertForbidden();
+
+        $this->assertCount(1, Blog::all());
     }
 }

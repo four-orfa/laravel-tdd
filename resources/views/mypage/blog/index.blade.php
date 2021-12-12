@@ -18,6 +18,11 @@
         <td>
             <a href="{{ route('mypage.blog.edit', $blog) }}">{{ $blog->title }}</a>
         </td>
+        <td>
+            <form method="post" action="{{ route('mypage.blog.delete', $blog) }}">
+                @csrf @method('delete') <input type="submit" value="delete" />
+            </form>
+        </td>
     </tr>
     @endforeach
 </table>

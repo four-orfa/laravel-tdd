@@ -57,6 +57,17 @@ class BlogMypageController extends Controller
             ->with('status', 'Blog Update');
     }
 
+    public function destroy(Blog $blog, Request $request)
+    {
+        if ($request->user()->isNot($blog->user)) {
+            abort(403);
+        }
+
+        $blog->delete();
+
+        return redirect('mypage/blogs');
+    }
+
     private function validateInput()
     {
         return request()->validate([
