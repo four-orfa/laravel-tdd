@@ -19,7 +19,7 @@ use Tests\Feature\Controllers\BlogViewControllerTest;
 */
 
 Route::get('/', [BlogViewController::class, 'index']);
-Route::get('detail/{blog}', [BlogViewController::class, 'detail']);
+Route::get('detail/{blog}', [BlogViewController::class, 'detail'])->middleware('blog.show.limit');
 
 Route::get('signup', [SignUpController::class, 'index']);
 Route::post('signup', [SignUpController::class, 'store']);

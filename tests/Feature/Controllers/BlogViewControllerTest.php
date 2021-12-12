@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers;
 
+use App\Http\Middleware\BlogShowLimit;
 use Tests\TestCase;
 use App\Models\Blog;
 use App\Models\Comment;
@@ -79,6 +80,8 @@ class BlogViewControllerTest extends TestCase
      */
     public function blogDetailTest()
     {
+        $this->withoutMiddleware([BlogShowLimit::class]);
+
         $blog = Blog::factory()->create();
 
         // if use hard cording.
@@ -124,6 +127,8 @@ class BlogViewControllerTest extends TestCase
     /** @test 1/1 call Happy NewYear! */
     public function newYearCommentTest()
     {
+        $this->withoutMiddleware([BlogShowLimit::class]);
+
         $blog = Blog::factory()->create();
 
         Carbon::setTestNow('2020-12-31');

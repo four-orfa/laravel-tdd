@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Controllers\Mypage;
 
+use App\Http\Middleware\BlogShowLimit;
 use App\Models\Blog;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -110,6 +111,8 @@ class BlogMypageControllerTest extends TestCase
     /** @test edit */
     function editMypageTest()
     {
+        $this->withoutMiddleware([BlogShowLimit::class]);
+
         $blog = Blog::factory()->create();
 
         $this->login($blog->user);
