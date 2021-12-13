@@ -6,10 +6,10 @@ use Tests\TestCase;
 use App\Models\Blog;
 use App\Models\Comment;
 use App\Models\User;
+use App\StrRandom;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Facades\Illuminate\Support\Str;
 
 class BlogViewControllerTest extends TestCase
 {
@@ -143,8 +143,9 @@ class BlogViewControllerTest extends TestCase
     {
         $blog = Blog::factory()->create();
 
-        Str::shouldReceive('random')
-            ->once()->with(10)->andReturn('random10st');
+        $this->mock(StrRandom::class, function ($mock) {
+            $mock->shouldReceive('random')->once()->with(10)->andReturn('random10st');
+        });
 
         $this->get('detail/' . $blog->id)
             ->assertOk()

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\StrRandom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Facades\Illuminate\Support\Str;
+
 
 class BlogViewController extends Controller
 {
@@ -27,7 +29,7 @@ class BlogViewController extends Controller
     {
         if ($blog->isClosed()) abort(403);
 
-        $random = Str::random(10);
+        $random = app(StrRandom::class)->random(10);
 
         return view('blog.detail', compact('blog', 'random'));
     }
