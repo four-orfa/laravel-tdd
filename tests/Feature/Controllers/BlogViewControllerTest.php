@@ -9,6 +9,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Facades\Illuminate\Support\Str;
 
 class BlogViewControllerTest extends TestCase
 {
@@ -135,5 +136,18 @@ class BlogViewControllerTest extends TestCase
         $this->get('detail/' . $blog->id)
             ->assertOk()
             ->assertSee('Happy NewYear!');
+    }
+
+    /** @test show */
+    function randomStringTest()
+    {
+        $blog = Blog::factory()->create();
+
+        Str::shouldReceive('random')
+            ->once()->with(10)->andReturn('random10st');
+
+        $this->get('detail/' . $blog->id)
+            ->assertOk()
+            ->assertSee('random10st');
     }
 }

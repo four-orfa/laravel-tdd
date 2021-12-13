@@ -7,6 +7,7 @@
 @endif
 
 <h1>{{ $blog->title }}</h1>
+<div>random : {{ $random }}</div>
 <div>{{ nl2br(e($blog->body)) }}</div>
 
 <p>name : {{ $blog->user->name }}</p>
