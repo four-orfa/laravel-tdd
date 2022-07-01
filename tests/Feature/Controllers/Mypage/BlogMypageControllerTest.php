@@ -163,7 +163,7 @@ class BlogMypageControllerTest extends TestCase
             ->assertRedirect('mypage/blogs');
 
         // DB delete test
-        $this->assertDeleted($blog);
+        $this->assertCount(0, Blog::all());
     }
 
     /** @test cant destroy by guest */
