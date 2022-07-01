@@ -3,11 +3,12 @@ version: "3"
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.0
+            context: ./vendor/laravel/sail/runtimes/8.1
             dockerfile: Dockerfile
             args:
                 WWWGROUP: "${WWWGROUP}"
-        image: sail-8.0/app
+                NODE_VERSION: '14'
+        image: sail-8.1/app
         extra_hosts:
             - "host.docker.internal:host-gateway"
         ports:
@@ -25,6 +26,7 @@ services:
             - pgsql
     pgsql:
         image: "postgres:13"
+        platform: linux/x86_64
         ports:
             - "${FORWARD_DB_PORT:-5432}:5432"
         environment:
